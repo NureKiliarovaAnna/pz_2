@@ -1,0 +1,14 @@
+{
+  "DAOToken (deploy)": 1733180,
+  "DAOTreasury (deploy)": 813361,
+  "DAOGovernor (deploy)": 1680380,
+  "DAOTreasury.setGovernor": 50276,
+  "DAOTreasury.deposit": 24902,
+  "DAOToken.delegate": 95666,
+  "DAOGovernor.createProposal (first)": 143394,
+  "DAOGovernor.createProposal (next)": 126294,
+  "DAOGovernor.castVote (first vote)": 86788,
+  "DAOGovernor.castVote (second vote)": 86747,
+  "DAOGovernor.execute": 133685,
+  "DAOTreasury.withdraw": 37762
+}

@@ -1,0 +1,40 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "deployer": "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+  "deployedAt": "2026-11-24T21:34:48.503Z",
+  "startBlock": 12205225,
+  "parameters": {
+    "tokenHolder": "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+    "admin": "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+    "proposer": "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+    "guardian": "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+    "votingPeriod": 600
+  },
+  "contracts": {
+    "DAOToken": {
+      "address": "0xF9945566F65B85CD76f79244499fc8aaf3cbc8d5",
+      "constructorArgs": [
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f"
+      ]
+    },
+    "DAOTreasury": {
+      "address": "0x28BE7a4979168fF64bA0433A26BfA799987BcC20",
+      "constructorArgs": [
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f"
+      ]
+    },
+    "DAOGovernor": {
+      "address": "0x66522E5de53BE3b9B3349c5BAd14601233D5AeEd",
+      "constructorArgs": [
+        "0xF9945566F65B85CD76f79244499fc8aaf3cbc8d5",
+        "0x28BE7a4979168fF64bA0433A26BfA799987BcC20",
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+        "0x9ae83c800099830a2052A1225079c3BAb336CB4f",
+        600
+      ]
+    }
+  }
+}

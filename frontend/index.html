@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAO Голосування</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">DVT</span>
+      <div>
+        <h1>DAO Голосування</h1>
+        <p class="muted">Пропозиції, голосування зі знімками та скарбниця</p>
+      </div>
+    </div>
+    <div class="wallet">
+      <span id="networkBadge" class="badge">Мережа: —</span>
+      <span id="accountBadge" class="badge">Гаманець не підключено</span>
+      <button id="connectBtn" class="primary">Підключити MetaMask</button>
+    </div>
+  </header>
+
+  <div id="networkWarning" class="banner warning" hidden>
+    <span id="networkWarningText"></span>
+    <button id="switchNetworkBtn">Перемкнути мережу</button>
+  </div>
+
+  <main id="app" class="grid" hidden>
+    <!-- Account -->
+    <section class="card">
+      <h2>Мій акаунт</h2>
+      <dl class="stats">
+        <div><dt>Баланс DVT</dt><dd id="tokenBalance">—</dd></div>
+        <div><dt>Сила голосу зараз</dt><dd id="votingPower">—</dd></div>
+        <div><dt>Делегат</dt><dd id="delegatee" class="mono">—</dd></div>
+        <div><dt>Ролі</dt><dd id="roles">—</dd></div>
+      </dl>
+      <p class="hint">Голоси рахуються лише після делегування і лише ті, що
+        були на момент створення пропозиції (знімок).</p>
+      <div class="row">
+        <button data-action="delegateSelf">Делегувати собі</button>
+      </div>
+      <form id="delegateForm" class="row">
+        <input id="delegateTo" placeholder="0x… адреса делегата" required>
+        <button type="submit">Делегувати</button>
+      </form>
+    </section>
+
+    <!-- Treasury -->
+    <section class="card">
+      <h2>Скарбниця <span id="treasuryPaused" class="tag danger" hidden>пауза</span></h2>
+      <dl class="stats">
+        <div><dt>Баланс</dt><dd id="treasuryBalance">—</dd></div>
+        <div><dt>Вільно</dt><dd id="treasuryAvailable">—</dd></div>
+        <div><dt>Зарезервовано</dt><dd id="treasuryReserved">—</dd></div>
+        <div><dt>Мені до отримання</dt><dd id="claimable">—</dd></div>
+      </dl>
+      <div class="row">
+        <button id="withdrawBtn" class="primary" data-action="withdraw">Забрати виплату</button>
+      </div>
+      <form id="depositForm" class="row">
+        <input id="depositAmount" type="number" min="0" step="any" placeholder="Сума, ETH" required>
+        <button type="submit">Поповнити</button>
+      </form>
+    </section>
+
+    <!-- New proposal -->
+    <section class="card" id="proposeCard">
+      <h2>Нова пропозиція</h2>
+      <form id="proposalForm" class="stack">
+        <label>Отримувач
+          <input id="propRecipient" placeholder="0x…" required>
+        </label>
+        <label>Сума, ETH
+          <input id="propAmount" type="number" min="0" step="any" required>
+        </label>
+        <label>Опис <span class="muted" id="descCounter">0 / 512 байтів</span>
+          <textarea id="propDescription" rows="3" required></textarea>
+        </label>
+        <button type="submit" class="primary">Створити пропозицію</button>
+      </form>
+      <p class="hint" id="proposerHint"></p>
+    </section>
+
+    <!-- Admin -->
+    <section class="card">
+      <h2>Аварійна зупинка</h2>
+      <dl class="stats">
+        <div><dt>Governor</dt><dd id="governorStatus">—</dd></div>
+        <div><dt>Treasury</dt><dd id="treasuryStatus">—</dd></div>
+        <div><dt>Тривалість голосування</dt><dd id="votingPeriod">—</dd></div>
+        <div><dt>Кворум</dt><dd>20% від знімка</dd></div>
+      </dl>
+      <div class="row wrap">
+        <button data-action="pause" data-target="governor">Пауза Governor</button>
+        <button data-action="unpause" data-target="governor">Відновити Governor</button>
+        <button data-action="pause" data-target="treasury">Пауза Treasury</button>
+        <button data-action="unpause" data-target="treasury">Відновити Treasury</button>
+      </div>
+      <p class="hint">Паузу вмикає роль GUARDIAN, вимикає — адміністратор.</p>
+      <div id="devTools" class="dev" hidden>
+        <strong>Локальна мережа:</strong>
+        <button data-time="60">+1 хв</button>
+        <button data-time="300">+5 хв</button>
+        <button data-time="3600">+1 год</button>
+      </div>
+    </section>
+
+    <!-- Proposals -->
+    <section class="card wide">
+      <div class="card-head">
+        <h2>Пропозиції <span class="muted" id="proposalTotal"></span></h2>
+        <div class="pager">
+          <button id="prevPage">← Назад</button>
+          <span id="pageInfo">—</span>
+          <button id="nextPage">Далі →</button>
+        </div>
+      </div>
+      <div id="proposals" class="proposals"></div>
+    </section>
+
+    <!-- Transactions and events -->
+    <section class="card">
+      <h2>Транзакції</h2>
+      <ul id="txList" class="log"></ul>
+    </section>
+    <section class="card">
+      <h2>Події контрактів</h2>
+      <ul id="eventList" class="log"></ul>
+    </section>
+  </main>
+
+  <section id="intro" class="intro">
+    <p>Підключіть MetaMask, щоб переглянути стан DAO та брати участь у голосуванні.</p>
+  </section>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="vendor/ethers.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="errors.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
